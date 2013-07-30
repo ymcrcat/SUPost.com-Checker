@@ -1,0 +1,21 @@
+{
+  "name": "__MSG_supost_name__",
+  "version": "0.0.1",
+  "manifest_version": 2,
+	"browser_action" : {
+		"default_title" : "SUPost.com checker",
+		"default_icon"	: "favicon.ico"
+	},
+  "background": {
+    "persistent": false,
+    "page": "background.html"
+  },
+  "default_locale": "en",
+  "description": "__MSG_supost_description__",
+  "permissions": [
+    "alarms",
+    "tabs",
+    "webNavigation",
+    "*://*.supost.com/"
+   ]
+}

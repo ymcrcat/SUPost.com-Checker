@@ -1,0 +1,7 @@
+{
+	"supost_name":{"message":"SUPost.com Checker"},
+	"supost_description":{"message":"Displays new items on SUPost.com"},
+	"supost_node_error":{"message":"Error: feed retrieved, but no &lt;fullcount&gt; node found"},
+	"supost_exception":{"message":"exception: $1","placeholders":{"1":{"content":"$1"}}}
+}
+
