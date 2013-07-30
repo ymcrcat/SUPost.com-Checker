@@ -101,6 +101,11 @@ function goToSupost() {
 
 function onInit() {
   console.log('onInit');
+
+	if (localStorage.hasOwnProperty('itemsCache')) {
+		delete localStorage.itemsCache;
+	}
+	
 	updateIcon();
   localStorage.requestFailureCount = 0;  // used for exponential backoff
   startRequest({scheduleRequest:true});

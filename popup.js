@@ -1,6 +1,8 @@
+var maxItemsShown = 10;
 var postsXpath = '//*[@class="one-result"]';
 var requestTimeout = 1000 * 2;
 var contentDivId = "content";
+var itemsCache = {};
 
 function fetchItems() {
 	console.log('fetchItems');
@@ -9,6 +11,10 @@ function fetchItems() {
 	xhr.overrideMimeType = "text/xml";
 
 	xhr.onreadystatechange = function() {
+		if (xhr.readyState != 4) {
+			return;
+		}
+
 		console.log('Got response');
 		var xmlDoc = xhr.responseXML;
 		console.log(xmlDoc);
@@ -26,25 +32,47 @@ function fetchItems() {
 } // end of fetchItems
 
 function addItem(content) {
-	var item = document.createElement("p");
+	console.log('addItem');
+	var item = document.createElement("tr");
 	item.type = "text/html";
 	var post = content.children[0];
 	var itemLink = post["href"];
 	var itemDescription = post.innerHTML;
-	item.innerHTML = itemDescription;
+
+	if (itemLink in itemsCache) {
+		console.log('Item ' + itemLink + ' is already cached');
+		return;
+	}
+	else {
+		console.log('Item ' + itemLink + ' not cached. Caching...');
+		itemsCache[itemLink] = itemDescription;
+	}
+	
+	item.innerHTML = '<a href="' + itemLink + '" target="_blank">' + itemDescription + '</a>';
 	document.getElementById(contentDivId).appendChild(item);
 }
 
+function saveItemsCache() {
+	localStorage.itemsCache = JSON.stringify(itemsCache);
+}
+
 function parseItems(content) {
+	console.log(itemsCache);
+	var itemsCounter = 0;
 	var itemContent = content.iterateNext();
-	while (itemContent) {
+	while (itemContent && itemsCounter < maxItemsShown) {
 		addItem(itemContent);
+		++itemsCounter;
 		var itemContent = content.iterateNext();
 	}
+
+	saveItemsCache();
 }
 
 function onInit() {
 	console.log('SUPost popup');
+	initCache();
+	console.log(itemsCache);
 	fetchItems();
 } // end of onInit();
 

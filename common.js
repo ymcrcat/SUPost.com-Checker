@@ -1,6 +1,16 @@
 var recentPostsXpath = '//*[@id="recentPosts"]';
 var requestTimeout = 1000 * 2;  // 2 seconds
 
+function initCache() {
+	if (!localStorage.hasOwnProperty('itemsCache')) {
+		console.log('Items cache does not exist in local storage.');
+	}
+	else {
+		console.log('Items cache already exists');
+		itemsCache = JSON.parse(localStorage.itemsCache);
+	}
+}
+
 function getSupostUrl() {
   return "http://www.supost.com/";
 }
