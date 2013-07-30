@@ -1,27 +1,9 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 var pollIntervalMin = 1;  // 1 minute
 var pollIntervalMax = 10;  // 10 minutes
-var requestTimeout = 1000 * 2;  // 2 seconds
-var recentPostsXpath = '//*[@id="recentPosts"]';
 
 // Legacy support for pre-event-pages.
 var oldChromeVersion = !chrome.runtime;
 var requestTimerId;
-
-function getSupostUrl() {
-  return "http://www.supost.com/";
-}
-
-// Identifier used to debug the possibility of multiple instances of the
-// extension making requests on behalf of a single user.
-function getInstanceId() {
-  if (!localStorage.hasOwnProperty("instanceId"))
-    localStorage.instanceId = 'gmc' + parseInt(Date.now() * Math.random(), 10);
-  return localStorage.instanceId;
-}
 
 function isSupostUrl(url) {
   // Return whether the URL starts with the SUPost prefix.
@@ -86,78 +68,6 @@ function startRequest(params) {
       updateIcon();
     }
   );
-}
-
-function getNewItemsCount(onSuccess, onError) {
-	console.log('getNewItemsCount');
-  var xhr = new XMLHttpRequest();
-  var abortTimerId = window.setTimeout(function() {
-    xhr.abort();  // synchronously calls onreadystatechange
-  }, requestTimeout);
-
-  function handleSuccess(count) {
-		console.log('handleSuccess: ' + count);
-    localStorage.requestFailureCount = 0;
-    window.clearTimeout(abortTimerId);
-    if (onSuccess) {
-      onSuccess(count);
-		}
-  }
-
-  var invokedErrorCallback = false;
-  function handleError() {
-    ++localStorage.requestFailureCount;
-    window.clearTimeout(abortTimerId);
-    if (onError && !invokedErrorCallback)
-      onError();
-    invokedErrorCallback = true;
-  }
-
-  try {
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState != 4) {
-        return;
-			}
-
-			console.log('Got response. Type: ' + xhr.responseType);
-
-      if (xhr.responseXML) {
-        var xmlDoc = xhr.responseXML;
-				console.log(xmlDoc);
-				console.log(recentPostsXpath);
-        var fullCountSet = xmlDoc.evaluate(recentPostsXpath,
-																					 xmlDoc.body,
-																					 null, 
-																					 XPathResult.ANY_TYPE,
-																					 null);
-				console.log(fullCountSet);
-        var fullCountNode = fullCountSet.iterateNext();
-        if (fullCountNode) {
-					console.log('Item found');
-          handleSuccess(fullCountNode.children.length);
-          return;
-        } else {
-          console.error(chrome.i18n.getMessage("supost_node_error"));
-        }
-      }
-
-      handleError();
-    };
-
-    xhr.onerror = function(error) {
-      handleError();
-    };
-
-		console.log('Fetching HTML...');
-
-		xhr.overrideMimeType = "text/xml";
-		xhr.responseType = "document";
-    xhr.open("GET", getSupostUrl(), true);
-    xhr.send();
-  } catch(e) {
-    console.error(chrome.i18n.getMessage("supost_exception", e));
-    handleError();
-  }
 }
 
 function updateItemsCount(count) {
@@ -255,7 +165,7 @@ if (chrome.webNavigation && chrome.webNavigation.onDOMContentLoaded &&
   });
 }
 
-chrome.browserAction.onClicked.addListener(goToSupost);
+// chrome.browserAction.onClicked.addListener(goToSupost);
 
 if (chrome.runtime && chrome.runtime.onStartup) {
   chrome.runtime.onStartup.addListener(function() {
