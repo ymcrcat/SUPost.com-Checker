@@ -1,4 +1,4 @@
-var recentPostsXpath = '//*[@id="recentPosts"]';
+var recentPostsXpath = '//*[@class="one-result"]';
 var requestTimeout = 1000 * 2;  // 2 seconds
 
 function initCache() {
@@ -9,6 +9,10 @@ function initCache() {
 		console.log('Items cache already exists');
 		itemsCache = JSON.parse(localStorage.itemsCache);
 	}
+}
+
+function saveItemsCache() {
+	localStorage.itemsCache = JSON.stringify(itemsCache);
 }
 
 function getSupostUrl() {
@@ -23,13 +27,30 @@ function getNewItemsCount(onSuccess, onError) {
   }, requestTimeout);
 
   function handleSuccess(content) {
-		count = content.children.length;
+		var count = 0;
+		var item = content.iterateNext();
+		while (item) {
+			var itemContent = item.children[0];
+			itemLink = itemContent["href"];
+			itemDescription = itemContent.innerHTML;
+			if (itemLink in itemsCache) {
+				console.log('Item ' + itemLink + ' is already in cache');
+			}
+			else {
+				++count;
+			}
+		
+			item = content.iterateNext();	
+		}
+
 		console.log('handleSuccess: ' + count);
     localStorage.requestFailureCount = 0;
     window.clearTimeout(abortTimerId);
     if (onSuccess) {
       onSuccess(count);
 		}
+
+		saveItemsCache();
   }
 
   var invokedErrorCallback = false;
@@ -52,17 +73,15 @@ function getNewItemsCount(onSuccess, onError) {
       if (xhr.responseXML) {
         var xmlDoc = xhr.responseXML;
 				console.log(xmlDoc);
-				console.log(recentPostsXpath);
         var fullCountSet = xmlDoc.evaluate(recentPostsXpath,
 																					 xmlDoc.body,
 																					 null, 
 																					 XPathResult.ANY_TYPE,
 																					 null);
 				console.log(fullCountSet);
-        var fullCountNode = fullCountSet.iterateNext();
-        if (fullCountNode) {
+        if (fullCountSet) {
 					console.log('Item found');
-          handleSuccess(fullCountNode);
+          handleSuccess(fullCountSet);
           return;
         } else {
           console.error(chrome.i18n.getMessage("supost_node_error"));

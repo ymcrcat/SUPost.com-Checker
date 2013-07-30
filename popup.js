@@ -1,4 +1,3 @@
-var maxItemsShown = 10;
 var postsXpath = '//*[@class="one-result"]';
 var requestTimeout = 1000 * 2;
 var contentDivId = "content";
@@ -52,15 +51,11 @@ function addItem(content) {
 	document.getElementById(contentDivId).appendChild(item);
 }
 
-function saveItemsCache() {
-	localStorage.itemsCache = JSON.stringify(itemsCache);
-}
-
 function parseItems(content) {
 	console.log(itemsCache);
 	var itemsCounter = 0;
 	var itemContent = content.iterateNext();
-	while (itemContent && itemsCounter < maxItemsShown) {
+	while (itemContent) {
 		addItem(itemContent);
 		++itemsCounter;
 		var itemContent = content.iterateNext();

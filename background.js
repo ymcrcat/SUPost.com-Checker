@@ -1,5 +1,7 @@
 var pollIntervalMin = 1;  // 1 minute
 var pollIntervalMax = 10;  // 10 minutes
+var itemsCache = {};
+initCache();
 
 // Legacy support for pre-event-pages.
 var oldChromeVersion = !chrome.runtime;
@@ -72,14 +74,8 @@ function startRequest(params) {
 
 function updateItemsCount(count) {
 	console.log("updateItemsCount");
-  var changed = localStorage.newItemsCount != count;
   localStorage.newItemsCount = count;
   updateIcon();
-}
-
-
-function ease(x) {
-  return (1-Math.sin(Math.PI/2+x*Math.PI))/2;
 }
 
 function goToSupost() {
@@ -102,41 +98,22 @@ function goToSupost() {
 function onInit() {
   console.log('onInit');
 
+	// reset cache in case we reload the extension
 	if (localStorage.hasOwnProperty('itemsCache')) {
 		delete localStorage.itemsCache;
 	}
+	initCache();
 	
 	updateIcon();
   localStorage.requestFailureCount = 0;  // used for exponential backoff
   startRequest({scheduleRequest:true});
-  if (!oldChromeVersion) {
-    // TODO(mpcomplete): We should be able to remove this now, but leaving it
-    // for a little while just to be sure the refresh alarm is working nicely.
-    chrome.alarms.create('watchdog', {periodInMinutes:5});
-  }
 }
 
 function onAlarm(alarm) {
   console.log('Got alarm', alarm);
   // |alarm| can be undefined because onAlarm also gets called from
   // window.setTimeout on old chrome versions.
-  if (alarm && alarm.name == 'watchdog') {
-    onWatchdog();
-  } else {
-    startRequest({scheduleRequest:true});
-  }
-}
-
-function onWatchdog() {
-  chrome.alarms.get('refresh', function(alarm) {
-    if (alarm) {
-      console.log('Refresh alarm exists. Yay.');
-    } else {
-      console.log('Refresh alarm doesn\'t exist!? ' +
-                  'Refreshing now and rescheduling.');
-      startRequest({scheduleRequest:true});
-    }
-  });
+  startRequest({scheduleRequest:true});
 }
 
 if (oldChromeVersion) {
@@ -146,31 +123,11 @@ if (oldChromeVersion) {
   chrome.alarms.onAlarm.addListener(onAlarm);
 }
 
-var filters = {
-  // TODO(aa): Cannot use urlPrefix because all the url fields lack the protocol
-  // part. See crbug.com/140238.
-  url: [{urlContains: getSupostUrl().replace(/^http?\:\/\//, '')}]
-};
-
-function onNavigate(details) {
-  if (details.url && isSupostUrl(details.url)) {
-    console.log('Recognized SUPost navigation to: ' + details.url + '.' +
-                'Refreshing count...');
-    startRequest({scheduleRequest:false});
-  }
-}
-if (chrome.webNavigation && chrome.webNavigation.onDOMContentLoaded &&
-    chrome.webNavigation.onReferenceFragmentUpdated) {
-  chrome.webNavigation.onDOMContentLoaded.addListener(onNavigate, filters);
-  chrome.webNavigation.onReferenceFragmentUpdated.addListener(
-      onNavigate, filters);
-} else {
-  chrome.tabs.onUpdated.addListener(function(_, details) {
-    onNavigate(details);
-  });
-}
-
 // chrome.browserAction.onClicked.addListener(goToSupost);
+
+chrome.browserAction.onClicked.addListener(function() {
+		updateItemsCount(0);
+	});
 
 if (chrome.runtime && chrome.runtime.onStartup) {
   chrome.runtime.onStartup.addListener(function() {
