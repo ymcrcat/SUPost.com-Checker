@@ -1,5 +1,6 @@
 var pollIntervalMin = 1;  // 1 minute
 var pollIntervalMax = 10;  // 10 minutes
+var iconpath = "favicon.png";
 var itemsCache = {};
 initCache();
 
@@ -17,12 +18,12 @@ function updateIcon() {
 	// Set number of new items on badge
   if (!localStorage.hasOwnProperty('newItemsCount')) {
 		console.log('Items count not set');
-    chrome.browserAction.setIcon({path:"favicon.ico"});
+    chrome.browserAction.setIcon({path:iconpath});
     chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
     chrome.browserAction.setBadgeText({text:"?"});
   } else {
 		console.log('Items count set to ' + localStorage.newItemsCount);
-    chrome.browserAction.setIcon({path: "favicon.ico"});
+    chrome.browserAction.setIcon({path: iconpath});
     chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
     chrome.browserAction.setBadgeText({
       text: localStorage.newItemsCount != "0" ? localStorage.newItemsCount : ""

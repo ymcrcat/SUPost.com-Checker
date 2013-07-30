@@ -4,7 +4,7 @@
   "manifest_version": 2,
 	"browser_action" : {
 		"default_title" : "SUPost.com checker",
-		"default_icon"	: "favicon.ico",
+		"default_icon"	: "favicon.png",
 		"default_popup"	: "popup.html"
 	},
   "background": {
@@ -13,6 +13,11 @@
   },
   "default_locale": "en",
   "description": "__MSG_supost_description__",
+	"icons": {
+		"16": "favicon.png",
+		"48": "supost48.png",
+		"128": "supost.png"
+	},
   "permissions": [
     "alarms",
     "tabs",
