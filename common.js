@@ -1,6 +1,30 @@
 var recentPostsXpath = '//*[@class="one-result"]';
-var requestTimeout = 1000 * 2;  // 2 seconds
+var settingsKey = 'settings';
 
+var DEFAULT_SETTINGS = {
+	'requestTimeout' : 1000 * 2, // 2 seconds
+	'pollIntervalMin' : 1,
+	'pollIntervalMax' : 60
+};
+
+var settings = DEFAULT_SETTINGS;
+
+function saveSettings()
+{
+	console.log('Saving settings...');
+	localStorage[settingsKey] = JSON.stringify(settings);
+}
+
+function restoreSettings()
+{
+	console.log('Restoring settings...');
+	if (localStorage.hasOwnProperty(settingsKey)) {
+		settings = JSON.parse(localStorage[settingsKey]);
+	}
+	else {
+		saveSettings();
+	}
+} // restoreOptions
 
 function initCache() {
 	if (!localStorage.hasOwnProperty('itemsCache')) {
@@ -46,7 +70,7 @@ function getNewItemsCount(onSuccess, onError) {
   var xhr = new XMLHttpRequest();
   var abortTimerId = window.setTimeout(function() {
     xhr.abort();  // synchronously calls onreadystatechange
-  }, requestTimeout);
+  }, settings.requestTimeout);
 
   function handleSuccess(content) {
 		var count = 0;

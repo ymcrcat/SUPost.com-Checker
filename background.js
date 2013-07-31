@@ -1,8 +1,6 @@
-var pollIntervalMin = 1;  // 1 minute
-var pollIntervalMax = 10;  // 10 minutes
 var iconpath = "images/favicon.png";
+var settings = DEFAULT_SETTINGS;
 var itemsCache = {};
-initCache();
 
 // Legacy support for pre-event-pages.
 var oldChromeVersion = !chrome.runtime;
@@ -32,7 +30,8 @@ function scheduleRequest() {
   var randomness = Math.random() * 2;
   var exponent = Math.pow(2, localStorage.requestFailureCount || 0);
   var multiplier = Math.max(randomness * exponent, 1);
-  var delay = Math.min(multiplier * pollIntervalMin, pollIntervalMax);
+  var delay = Math.min(multiplier * settings.pollIntervalMin, 
+											 settings.pollIntervalMax);
   delay = Math.round(delay);
   console.log('Scheduling for: ' + delay);
 
@@ -76,6 +75,8 @@ function updateItemsCount(count) {
 
 function onInit() {
   console.log('onInit');
+
+	restoreSettings();
 
 	// reset cache in case we reload the extension
 	if (localStorage.hasOwnProperty('itemsCache')) {

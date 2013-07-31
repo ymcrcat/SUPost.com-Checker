@@ -1,6 +1,6 @@
 var postsXpath = '//*[@class="one-result"]';
-var requestTimeout = 1000 * 2;
 var contentDivId = "content";
+var settings = DEFAULT_SETTINGS;
 var itemsCache = {};
 
 function fetchItems() {
@@ -43,11 +43,12 @@ function addItem(content) {
 		return false;
 	}
 	else {
-		console.log('Item ' + itemLink + ' not cached. Caching...');
+		// console.log('Item ' + itemLink + ' not cached. Caching...');
 		itemsCache[itemLink] = itemDescription;
 	}
 	
-	item.innerHTML = '<a href="' + itemLink + '" target="_blank">' + itemDescription + '</a>';
+	item.innerHTML = '<a href="' + itemLink + '" target="_blank">' 
+										+ itemDescription + '</a>';
 	document.getElementById(contentDivId).appendChild(item);
 	return true;
 }
@@ -57,7 +58,12 @@ function noItems() {
 	var item = document.createElement("tr");
 	item.type = "text/html";
 	item.innerHTML = "No new items";
-	document.getElementById(contentDivId).appendChild(item);
+
+	var div = document.getElementById('content_div');
+	var smalldiv = document.createElement('div');
+	smalldiv.class = 'small';
+	smalldiv.appendChild(item);
+	div.parentNode.replaceChild(smalldiv, div);
 }
 
 function parseItems(content) {
@@ -79,10 +85,12 @@ function parseItems(content) {
 	// notify background window about cache update
 	chrome.runtime.sendMessage({greeting:'update'});
 	saveItemsCache();
-}
+} // end of parseItems
 
+// Bind gotoSupost() to click on SUPost banner
+// If a tab is already open on SUPost it will take
+// us to that tab
 function bindGotoSupost() {
-	// bind gotoSupost to click on SUPost banner
 	var supostLink = document.getElementById('supost_link');
 	supostLink.onclick = gotoSupost;
 	supostLink.href = '';
@@ -91,6 +99,8 @@ function bindGotoSupost() {
 
 function onInit() {
 	console.log('SUPost popup');
+	restoreSettings();
+
 	initCache();
 	console.log(itemsCache);	
 	
