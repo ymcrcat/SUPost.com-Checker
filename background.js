@@ -1,17 +1,12 @@
 var pollIntervalMin = 1;  // 1 minute
 var pollIntervalMax = 10;  // 10 minutes
-var iconpath = "favicon.png";
+var iconpath = "images/favicon.png";
 var itemsCache = {};
 initCache();
 
 // Legacy support for pre-event-pages.
 var oldChromeVersion = !chrome.runtime;
 var requestTimerId;
-
-function isSupostUrl(url) {
-  // Return whether the URL starts with the SUPost prefix.
-  return url.indexOf(getSupostUrl()) == 0;
-}
 
 function updateIcon() {
 	console.log('updateIcon');
@@ -79,23 +74,6 @@ function updateItemsCount(count) {
   updateIcon();
 }
 
-function goToSupost() {
-  console.log('Going to SUPost...');
-  chrome.tabs.getAllInWindow(undefined, function(tabs) {
-    for (var i = 0, tab; tab = tabs[i]; i++) {
-      if (tab.url && isSupostUrl(tab.url)) {
-        console.log('Found SUPost tab: ' + tab.url + '. ' +
-                    'Focusing and refreshing count...');
-        chrome.tabs.update(tab.id, {selected: true});
-        startRequest({scheduleRequest:false});
-        return;
-      }
-    }
-    console.log('Could not find SUPost tab. Creating one...');
-    chrome.tabs.create({url: getSupostUrl()});
-  });
-}
-
 function onInit() {
   console.log('onInit');
 
@@ -117,6 +95,14 @@ function onAlarm(alarm) {
   startRequest({scheduleRequest:true});
 }
 
+function messageHandler(msg, sender, sendResponse) {
+	console.log(msg);
+	if (msg.greeting == 'update') {
+		console.log('Update request');
+		updateItemsCount(0);
+	}
+}
+
 if (oldChromeVersion) {
   onInit();
 } else {
@@ -124,11 +110,9 @@ if (oldChromeVersion) {
   chrome.alarms.onAlarm.addListener(onAlarm);
 }
 
-// chrome.browserAction.onClicked.addListener(goToSupost);
-
-chrome.browserAction.onClicked.addListener(function() {
-		updateItemsCount(0);
-	});
+if (chrome.runtime) {
+	chrome.runtime.onMessage.addListener(messageHandler);
+}
 
 if (chrome.runtime && chrome.runtime.onStartup) {
   chrome.runtime.onStartup.addListener(function() {

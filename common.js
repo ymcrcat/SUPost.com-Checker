@@ -1,6 +1,7 @@
 var recentPostsXpath = '//*[@class="one-result"]';
 var requestTimeout = 1000 * 2;  // 2 seconds
 
+
 function initCache() {
 	if (!localStorage.hasOwnProperty('itemsCache')) {
 		console.log('Items cache does not exist in local storage.');
@@ -17,6 +18,27 @@ function saveItemsCache() {
 
 function getSupostUrl() {
   return "http://www.supost.com/";
+}
+
+function isSupostUrl(url) {
+  // Return whether the URL starts with the SUPost prefix.
+  return url.indexOf('supost.com') >= 0;
+}
+
+function gotoSupost() {
+  console.log('Going to SUPost...');
+  chrome.tabs.getAllInWindow(undefined, function(tabs) {
+    for (var i = 0, tab; tab = tabs[i]; i++) {
+      if (tab.url && isSupostUrl(tab.url)) {
+        console.log('Found SUPost tab: ' + tab.url + '. ' +
+                    'Focusing and refreshing count...');
+        chrome.tabs.update(tab.id, {selected: true});
+        return;
+      }
+    }
+    console.log('Could not find SUPost tab. Creating one...');
+    chrome.tabs.create({url: getSupostUrl()});
+  });
 }
 
 function getNewItemsCount(onSuccess, onError) {

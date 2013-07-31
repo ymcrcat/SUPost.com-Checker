@@ -31,7 +31,7 @@ function fetchItems() {
 } // end of fetchItems
 
 function addItem(content) {
-	console.log('addItem');
+	// console.log('addItem');
 	var item = document.createElement("tr");
 	item.type = "text/html";
 	var post = content.children[0];
@@ -39,8 +39,8 @@ function addItem(content) {
 	var itemDescription = post.innerHTML;
 
 	if (itemLink in itemsCache) {
-		console.log('Item ' + itemLink + ' is already cached');
-		return;
+		// console.log('Item ' + itemLink + ' is already cached');
+		return false;
 	}
 	else {
 		console.log('Item ' + itemLink + ' not cached. Caching...');
@@ -49,6 +49,15 @@ function addItem(content) {
 	
 	item.innerHTML = '<a href="' + itemLink + '" target="_blank">' + itemDescription + '</a>';
 	document.getElementById(contentDivId).appendChild(item);
+	return true;
+}
+
+function noItems() {
+	console.log("noItems");
+	var item = document.createElement("tr");
+	item.type = "text/html";
+	item.innerHTML = "No new items";
+	document.getElementById(contentDivId).appendChild(item);
 }
 
 function parseItems(content) {
@@ -56,18 +65,37 @@ function parseItems(content) {
 	var itemsCounter = 0;
 	var itemContent = content.iterateNext();
 	while (itemContent) {
-		addItem(itemContent);
-		++itemsCounter;
+		var isnew = addItem(itemContent);
+		if (isnew) { 
+			++itemsCounter;
+		}
 		var itemContent = content.iterateNext();
 	}
+	
+	if (itemsCounter == 0) {
+		noItems();
+	}
 
+	// notify background window about cache update
+	chrome.runtime.sendMessage({greeting:'update'});
 	saveItemsCache();
+}
+
+function bindGotoSupost() {
+	// bind gotoSupost to click on SUPost banner
+	var supostLink = document.getElementById('supost_link');
+	supostLink.onclick = gotoSupost;
+	supostLink.href = '';
+	supostLink.target = '';
 }
 
 function onInit() {
 	console.log('SUPost popup');
 	initCache();
-	console.log(itemsCache);
+	console.log(itemsCache);	
+	
+	bindGotoSupost();
+
 	fetchItems();
 } // end of onInit();
 
