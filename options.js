@@ -39,6 +39,8 @@ function onInit() {
 	console.log('Settings restored');
 
 	document.addEventListener('DOMContentLoaded', restore_options);
+	document.querySelector('#clearItemsCache').
+		addEventListener('click', clearItemsCache);
 	document.querySelector('#save').addEventListener('click', save_options);
 }
 

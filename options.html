@@ -2,11 +2,21 @@
 <head><title>SUPost.com Checker Options</title></head>
 <body>
 
-<form>
+<form id="settings_form">
 Min. poll interval: <input id="poll_interval_min" type="text" />	<br>
 Max. poll interval: <input id="poll_interval_max" type="texdt" />	<br>
 Request timeout: 		<input id="request_timeout" type="text" />		<br>
 </form>
+
+Search keywords (comma separated):
+<br>
+<textarea form="settings_form" rows="4" cols="50"></textarea>
+Search keywords are items of interest for the user. 
+SUPost Checker will look for those keywords in SUPost posts and notify
+the user once a relevant item is posted.
+
+<br>
+<button id="clearItemsCache">Clear items cache</button>
 
 <br>
 <div id="status"></div>

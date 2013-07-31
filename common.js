@@ -1,4 +1,7 @@
-var recentPostsXpath = '//*[@class="one-result"]';
+//////////////////////// MESSAGES //////////////////////
+var MSG_ID_UPDATE = 'update';
+
+//////////////////////// SETTINGS //////////////////////
 var settingsKey = 'settings';
 
 var DEFAULT_SETTINGS = {
@@ -26,6 +29,12 @@ function restoreSettings()
 	}
 } // restoreOptions
 
+restoreSettings();
+
+/////////////////////// Items Cache ////////////////////
+
+var itemsCache = {};
+
 function initCache() {
 	if (!localStorage.hasOwnProperty('itemsCache')) {
 		console.log('Items cache does not exist in local storage.');
@@ -39,6 +48,27 @@ function initCache() {
 function saveItemsCache() {
 	localStorage.itemsCache = JSON.stringify(itemsCache);
 }
+
+function clearItemsCache() {
+	if (localStorage.hasOwnProperty('itemsCache')) {
+		delete localStorage.itemsCache;
+	}
+	
+	initCache();
+}
+
+// make sure we restore the cache from local storage 
+// after we define the itemsCache variable as {}
+initCache();
+
+/////////////////////////////////////////////////////////////
+
+function getPostIndexFromLink(link) {
+	parts = link.split('/');
+	return parts[parts.length-1];
+}
+
+var recentPostsXpath = '//*[@class="one-result"]';
 
 function getSupostUrl() {
   return "http://www.supost.com/";

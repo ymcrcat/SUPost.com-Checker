@@ -1,7 +1,5 @@
 var postsXpath = '//*[@class="one-result"]';
 var contentDivId = "content";
-var settings = DEFAULT_SETTINGS;
-var itemsCache = {};
 
 function fetchItems() {
 	console.log('fetchItems');
@@ -83,7 +81,7 @@ function parseItems(content) {
 	}
 
 	// notify background window about cache update
-	chrome.runtime.sendMessage({greeting:'update'});
+	chrome.runtime.sendMessage({greeting:MSG_ID_UPDATE});
 	saveItemsCache();
 } // end of parseItems
 

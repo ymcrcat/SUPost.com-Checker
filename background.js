@@ -1,6 +1,4 @@
 var iconpath = "images/favicon.png";
-var settings = DEFAULT_SETTINGS;
-var itemsCache = {};
 
 // Legacy support for pre-event-pages.
 var oldChromeVersion = !chrome.runtime;
@@ -78,10 +76,6 @@ function onInit() {
 
 	restoreSettings();
 
-	// reset cache in case we reload the extension
-	if (localStorage.hasOwnProperty('itemsCache')) {
-		delete localStorage.itemsCache;
-	}
 	initCache();
 	
 	updateIcon();
@@ -98,7 +92,7 @@ function onAlarm(alarm) {
 
 function messageHandler(msg, sender, sendResponse) {
 	console.log(msg);
-	if (msg.greeting == 'update') {
+	if (msg.greeting == MSG_ID_UPDATE) {
 		console.log('Update request');
 		updateItemsCount(0);
 	}
