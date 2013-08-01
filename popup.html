@@ -4,38 +4,67 @@
 		body {
 			background-color: #60FFAF;
 		}
-		.content {
+		.logo{
+			width: 100px;
 			float: left;
+		}
+		.content {
+			float: right;
+			width: 600px;
+		}
+		.old_content {
+			float: right;
 			width: 600px;
 		}
 		.options {
 			float: right;
+			width: 50px;
 		}
 		.old_items a:link {
 			color: #AAAAAA;
+		}
+		.post_photos {
+			width: 400px;
+			float: left;
+			padding: 5px;
+			padding-left: 35px;
+		}
+		.post_photo {
+			width: 80px;
+			float: left;
+			padding: 5px;
+			text-align: center;7
+		}
+		.post_photo_title {
+			text-align: center;
+		}
+		.days-ago {
+			font-size: 13px;
 		}
 	</style>
 </head>
 
 <body>
 	<div>
+	<div class="logo">
 	<a id="supost_link" href="http://supost.com" target="_blank"><img src="images/SUPostLogo.gif" /></a></div>
-	<hr>
+	<div id="options" class="options" >
+		<a href="options.html" target="_blank" alt="Settings"><img src="images/Setting-icon.png" /></a>
+	</div>
+	</div>
+	<div id="post_photos" class="post_photos" >
+	</div>
 	<div id="content_div" class="content">
 		<table>
 			<td id="content">
 			</td>
 		</table>
 	</div>
-	<div class="content">
+	<div class="old_content">
 		<table>
 			<td id="old_items" class="old_items">
 			</td>
 		</table>
-	</div>
-	<hr>
-	<div id="options" class="options">
-		<a href="options.html" target="_blank" alt="Settings"><img src="images/Setting-icon.png" /></a>
 	</div>
 </body>
 

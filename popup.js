@@ -1,32 +1,6 @@
 var postsXpath = '//*[@class="one-result"]';
+var postPhotosXpath = '//*[@class="post_photos"]';
 var contentDivId = "content";
-
-function fetchItems() {
-	console.log('fetchItems');
-	var xhr = new XMLHttpRequest();
-	xhr.responseType = "document";
-	xhr.overrideMimeType = "text/xml";
-
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState != 4) {
-			return;
-		}
-
-		console.log('Got response');
-		var xmlDoc = xhr.responseXML;
-		console.log(xmlDoc);
-		var content = xmlDoc.evaluate(postsXpath,
-																	xmlDoc.body,
-																	null,
-																	XPathResult.ANY_TYPE,
-																	null);
-		console.log(content);
-		parseItems(content);
-	}
-
-	xhr.open('GET', getSupostUrl(), true); // synchronous request
-	xhr.send();
-} // end of fetchItems
 
 function addItem(content) {
 	// console.log('addItem');
@@ -98,6 +72,65 @@ function bindGotoSupost() {
 	supostLink.href = '';
 	supostLink.target = '';
 }
+
+function showPhotos(xmlDoc) {
+	console.log('showPhotos');
+	var photosDiv = xmlDoc.evaluate(postPhotosXpath,
+																	xmlDoc.body,
+																	null,
+																	XPathResult.ANY_TYPE,
+																	null);
+	var photos = photosDiv.iterateNext();
+	if (!photos) {
+		console.log('No post photos');
+		return;
+	}
+	
+	console.log(photos);
+	console.log(photos.children.length + ' post photos');
+	// weird stuff. we shouldn't do i++
+	for (var i = 0, photo; photo = photos.children[i];) {
+		console.log(photo);
+		// strange shit but works, when we actually assign the
+		// 'src' to 'src' the link is updated with the correct base
+		photo.children[0].children[0]['src'] =
+			photo.children[0].children[0]['src'];
+		photo.children[0].children[0]['width'] = '70';
+		photo.removeChild(photo.children[2]);
+		photo.removeChild(photo.children[1]);
+		document.getElementById('post_photos').appendChild(photo);
+		console.log(i);
+	}
+} // showPhotos
+
+function fetchItems() {
+	console.log('fetchItems');
+	var xhr = new XMLHttpRequest();
+	xhr.responseType = "document";
+	xhr.overrideMimeType = "text/xml";
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState != 4) {
+			return;
+		}
+
+		console.log('Got response');
+		var xmlDoc = xhr.responseXML;
+		console.log(xmlDoc);
+		var content = xmlDoc.evaluate(postsXpath,
+																	xmlDoc.body,
+																	null,
+																	XPathResult.ANY_TYPE,
+																	null);
+		console.log(content);
+		parseItems(content);
+
+		showPhotos(xmlDoc);
+	} // on ready
+
+	xhr.open('GET', getSupostUrl(), true); // synchronous request
+	xhr.send();
+} // end of fetchItems
 
 function onInit() {
 	console.log('SUPost popup');
