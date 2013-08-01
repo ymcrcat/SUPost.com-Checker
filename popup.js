@@ -38,18 +38,20 @@ function addItem(content) {
 
 	if (itemLink in itemsCache) {
 		// console.log('Item ' + itemLink + ' is already cached');
+		item.innerHTML = '<a href="' + itemLink + '" target="_blank">' 
+			+ itemDescription + '</a>';
+		document.getElementById('old_items').appendChild(item);
 		return false;
-	}
+	} // old item
 	else {
 		// console.log('Item ' + itemLink + ' not cached. Caching...');
 		itemsCache[itemLink] = itemDescription;
-	}
-	
-	item.innerHTML = '<a href="' + itemLink + '" target="_blank">' 
-										+ itemDescription + '</a>';
-	document.getElementById(contentDivId).appendChild(item);
-	return true;
-}
+		item.innerHTML = '<a href="' + itemLink + '" target="_blank">' 
+			+ itemDescription + '</a>';
+		document.getElementById(contentDivId).appendChild(item);
+		return true;
+	} // new item
+} // end of addItem
 
 function noItems() {
 	console.log("noItems");
@@ -76,9 +78,11 @@ function parseItems(content) {
 		var itemContent = content.iterateNext();
 	}
 	
+	/*
 	if (itemsCounter == 0) {
 		noItems();
 	}
+	*/
 
 	// notify background window about cache update
 	chrome.runtime.sendMessage({greeting:MSG_ID_UPDATE});
