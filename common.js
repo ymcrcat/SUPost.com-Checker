@@ -5,9 +5,11 @@ var MSG_ID_UPDATE = 'update';
 var settingsKey = 'settings';
 
 var DEFAULT_SETTINGS = {
-	'requestTimeout' : 1000 * 2, // 2 seconds
-	'pollIntervalMin' : 1,
-	'pollIntervalMax' : 60
+	'requestTimeout' 		: 1000 * 2, // 2 seconds
+	'pollIntervalMin' 	: 1,
+	'pollIntervalMax' 	: 60,
+	'filterByKeywords' 	: false,
+	'keywords'					: ''
 };
 
 var settings = DEFAULT_SETTINGS;
@@ -16,6 +18,7 @@ function saveSettings()
 {
 	console.log('Saving settings...');
 	localStorage[settingsKey] = JSON.stringify(settings);
+	console.log(settings);
 }
 
 function restoreSettings()
@@ -23,6 +26,7 @@ function restoreSettings()
 	console.log('Restoring settings...');
 	if (localStorage.hasOwnProperty(settingsKey)) {
 		settings = JSON.parse(localStorage[settingsKey]);
+		console.log(settings);
 	}
 	else {
 		saveSettings();
@@ -93,7 +97,7 @@ function gotoSupost() {
     console.log('Could not find SUPost tab. Creating one...');
     chrome.tabs.create({url: getSupostUrl()});
   });
-}
+} // gotoSupost
 
 function getNewItemsCount(onSuccess, onError) {
 	console.log('getNewItemsCount');
@@ -181,4 +185,4 @@ function getNewItemsCount(onSuccess, onError) {
     console.error(chrome.i18n.getMessage("supost_exception", e));
     handleError();
   }
-}
+} // getNewItemsCount

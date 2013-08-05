@@ -3,24 +3,26 @@
 <body>
 
 <form id="settings_form">
-Min. poll interval: <input id="poll_interval_min" type="text" />	<br>
-Max. poll interval: <input id="poll_interval_max" type="texdt" />	<br>
-Request timeout: 		<input id="request_timeout" type="text" />		<br>
-</form>
-
+<table>
+<tr><td>Min. poll interval</td><td><input id="poll_interval_min" type="text" /></td></tr>
+<tr><td>Max. poll interval</td><td><input id="poll_interval_max" type="texdt" /></td></tr>
+<tr><td>Request timeout</td><td><input id="request_timeout" type="text" /></td></tr>
+</table>
+<br>
+<input id="filter_by_keywords" type="checkbox" /> Filter posts using keywords <br>
 Search keywords (comma separated):
 <br>
-<textarea form="settings_form" rows="4" cols="50"></textarea>
-Search keywords are items of interest for the user. 
+<textarea id="keywords" rows="4" cols="50" ></textarea>
+<br>
+Search keywords are items of interest for the user.<br> 
 SUPost Checker will look for those keywords in SUPost posts and notify
 the user once a relevant item is posted.
+</form>
 
-<br>
 <button id="clearItemsCache">Clear items cache</button>
-
-<br>
+<hr>
 <div id="status"></div>
-<button id="save">Save</button>
+<button id="save">Save</button> <button id="cancel">Cancel</button>
 </body>
 
 <script src="common.js"></script>

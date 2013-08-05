@@ -95,7 +95,12 @@ function showPhotos(xmlDoc) {
 		// 'src' to 'src' the link is updated with the correct base
 		photo.children[0].children[0]['src'] =
 			photo.children[0].children[0]['src'];
-		photo.children[0].children[0]['width'] = '70';
+
+		// update a href
+		photo.children[0]['href'] = photo.children[0]['href'];
+		photo.children[0]['target'] = '_blank';
+
+		photo.children[0].children[0]['height'] = '70';
 		photo.removeChild(photo.children[2]);
 		photo.removeChild(photo.children[1]);
 		document.getElementById('post_photos').appendChild(photo);
