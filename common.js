@@ -72,6 +72,7 @@ function getPostIndexFromLink(link) {
 	return parts[parts.length-1];
 }
 
+// XPath to recent post elements on SUPost homepage
 var recentPostsXpath = '//*[@class="one-result"]';
 
 function getSupostUrl() {
@@ -82,22 +83,6 @@ function isSupostUrl(url) {
   // Return whether the URL starts with the SUPost prefix.
   return url.indexOf('supost.com') >= 0;
 }
-
-function gotoSupost() {
-  console.log('Going to SUPost...');
-  chrome.tabs.getAllInWindow(undefined, function(tabs) {
-    for (var i = 0, tab; tab = tabs[i]; i++) {
-      if (tab.url && isSupostUrl(tab.url)) {
-        console.log('Found SUPost tab: ' + tab.url + '. ' +
-                    'Focusing and refreshing count...');
-        chrome.tabs.update(tab.id, {selected: true});
-        return;
-      }
-    }
-    console.log('Could not find SUPost tab. Creating one...');
-    chrome.tabs.create({url: getSupostUrl()});
-  });
-} // gotoSupost
 
 function getNewItemsCount(onSuccess, onError) {
 	console.log('getNewItemsCount');
@@ -137,8 +122,9 @@ function getNewItemsCount(onSuccess, onError) {
   function handleError() {
     ++localStorage.requestFailureCount;
     window.clearTimeout(abortTimerId);
-    if (onError && !invokedErrorCallback)
+    if (onError && !invokedErrorCallback) {
       onError();
+		}
     invokedErrorCallback = true;
   }
 

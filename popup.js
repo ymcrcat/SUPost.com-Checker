@@ -1,4 +1,3 @@
-var postsXpath = '//*[@class="one-result"]';
 var postPhotosXpath = '//*[@class="post_photos"]';
 var contentDivId = "content";
 
@@ -59,9 +58,28 @@ function parseItems(content) {
 	*/
 
 	// notify background window about cache update
-	chrome.runtime.sendMessage({greeting:MSG_ID_UPDATE});
+	if (chrome.runtime) {
+		// if not old Chrome version
+		chrome.runtime.sendMessage({greeting:MSG_ID_UPDATE});
+	}
 	saveItemsCache();
 } // end of parseItems
+
+function gotoSupost() {
+  console.log('Going to SUPost...');
+  chrome.tabs.getAllInWindow(undefined, function(tabs) {
+    for (var i = 0, tab; tab = tabs[i]; i++) {
+      if (tab.url && isSupostUrl(tab.url)) {
+        console.log('Found SUPost tab: ' + tab.url + '. ' +
+                    'Focusing and refreshing count...');
+        chrome.tabs.update(tab.id, {selected: true});
+        return;
+      }
+    }
+    console.log('Could not find SUPost tab. Creating one...');
+    chrome.tabs.create({url: getSupostUrl()});
+  });
+} // gotoSupost
 
 // Bind gotoSupost() to click on SUPost banner
 // If a tab is already open on SUPost it will take
@@ -122,7 +140,7 @@ function fetchItems() {
 		console.log('Got response');
 		var xmlDoc = xhr.responseXML;
 		console.log(xmlDoc);
-		var content = xmlDoc.evaluate(postsXpath,
+		var content = xmlDoc.evaluate(recentPostsXpath,
 																	xmlDoc.body,
 																	null,
 																	XPathResult.ANY_TYPE,
