@@ -1,5 +1,6 @@
 var postPhotosXpath = '//*[@class="post_photos"]';
 var contentDivId = "content";
+var oldItemsDivId = 'old_items';
 
 function addItem(content) {
 	// console.log('addItem');
@@ -13,7 +14,7 @@ function addItem(content) {
 		// console.log('Item ' + itemLink + ' is already cached');
 		item.innerHTML = '<a href="' + itemLink + '" target="_blank">' 
 			+ itemDescription + '</a>';
-		document.getElementById('old_items').appendChild(item);
+		document.getElementById(oldItemsDivId).appendChild(item);
 		return false;
 	} // old item
 	else {
@@ -58,12 +59,6 @@ function parseItems(content) {
 		var itemContent = content.iterateNext();
 	}
 	
-	/*
-	if (itemsCounter == 0) {
-		noItems();
-	}
-	*/
-
 	// notify background window about cache update
 	if (chrome.runtime) {
 		// if not old Chrome version

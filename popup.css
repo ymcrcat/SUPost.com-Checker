@@ -3,11 +3,6 @@
 	float: left;
 }
 .content {
-	float: right;
-	width: 600px;
-}
-.old_content {
-	float: right;
 	width: 600px;
 }
 .buttons {
