@@ -1,0 +1,31 @@
+.logo{
+	width: 90px;
+	float: left;
+}
+.content {
+	float: right;
+	width: 600px;
+}
+.old_content {
+	float: right;
+	width: 600px;
+}
+.buttons {
+	float: right;
+	width: 80px;
+}
+.old_items a:link {
+	color: #AAAAAA;
+}
+.post_photos {
+	width: 400px;
+	float: left;
+	padding: 5px;
+	padding-left: 15px;
+}
+.post_photo {
+	width: 80px;
+	float: left;
+	padding: 5px;
+	text-align: center;
+}

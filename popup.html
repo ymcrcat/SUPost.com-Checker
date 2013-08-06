@@ -1,47 +1,18 @@
 <html>
 <head>
-	<style type="text/css">
-		.logo{
-			width: 90px;
-			float: left;
-		}
-		.content {
-			float: right;
-			width: 600px;
-		}
-		.old_content {
-			float: right;
-			width: 600px;
-		}
-		.options {
-			float: right;
-			width: 40px;
-		}
-		.old_items a:link {
-			color: #AAAAAA;
-		}
-		.post_photos {
-			width: 400px;
-			float: left;
-			padding: 5px;
-			padding-left: 15px;
-		}
-		.post_photo {
-			width: 80px;
-			float: left;
-			padding: 5px;
-			text-align: center;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="popup.css" >
 </head>
 
 <body>
 	<div class="logo">
 	<a id="supost_link" href="http://supost.com" target="_blank"><img src="images/SUPostLogo.gif" width="80" /></a></div>
-	<div id="options" class="options" >
-		<a href="options.html" target="_blank" alt="Settings"><img src="images/Setting-icon.png" width="40" /></a>
-	</div>
 	<div id="post_photos" class="post_photos" >
+	</div>
+	<div id="buttons" class="buttons" >
+		<table>
+		<tr><td><img id="refresh" src="images/refresh.png" height="35" /></td>
+		<td><a href="options.html" target="_blank" alt="Settings"><img src="images/Setting-icon.png" height="40" /></a></td>
+		</tr>
 	</div>
 	<div id="content_div" class="content">
 		<table>

@@ -162,6 +162,10 @@ function fetchItems() {
 	xhr.send();
 } // end of fetchItems
 
+function refresh() {
+	location.reload(true);
+}
+
 function onInit() {
 	console.log('SUPost popup');
 	restoreSettings();
@@ -173,6 +177,8 @@ function onInit() {
 	bindGotoSupost();
 
 	fetchItems();
+
+	document.querySelector('#refresh').addEventListener('click', refresh);
 } // end of onInit();
 
 onInit();
