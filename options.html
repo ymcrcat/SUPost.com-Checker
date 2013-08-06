@@ -4,10 +4,10 @@
 
 <form id="settings_form">
 <table>
-<tr><td>Min. poll interval</td><td><input id="poll_interval_min" type="text" /></td></tr>
-<tr><td>Max. poll interval</td><td><input id="poll_interval_max" type="texdt" /></td></tr>
-<tr><td>Request timeout</td><td><input id="request_timeout" type="text" /></td></tr>
-<tr><td>Popup background color</td><td><input id="popup_bg_color" class="color" /></td></tr>
+<tr><td>Min. poll interval</td><td><input id="poll_interval_min" type="text" /></td><td>min.</td></tr>
+<tr><td>Max. poll interval</td><td><input id="poll_interval_max" type="texdt" /></td><td>min.</td></tr>
+<tr><td>Request timeout</td><td><input id="request_timeout" type="text" /></td><td>ms</td></tr>
+<tr><td>Popup background color</td><td><input id="popup_bg_color" class="color" /></td><td>(press control to open palette)</td></tr>
 </table>
 <br>
 <input id="filter_by_keywords" type="checkbox" /> Filter posts using keywords <br>
@@ -20,7 +20,7 @@ SUPost Checker will look for those keywords in SUPost posts and notify
 the user once a relevant item is posted.
 </form>
 
-<button id="clearItemsCache">Clear items cache</button>
+<button id="clearItemsCache">Clear items cache</button> (Clear cache of already seen items)
 <hr>
 <div id="status"></div>
 <button id="save">Save</button> <button id="cancel">Cancel</button>
