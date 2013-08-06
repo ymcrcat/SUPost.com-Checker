@@ -166,6 +166,17 @@ function refresh() {
 	location.reload(true);
 }
 
+function chageImageOnHover(id, mouseover_img, mouseout_img) {
+	var elem = document.getElementById(id);
+	elem.onmouseover = function() {
+		elem.src = mouseover_img;
+	};
+	
+	elem.onmouseout = function() {
+		elem.src = mouseout_img;
+	};
+}
+
 function onInit() {
 	console.log('SUPost popup');
 	restoreSettings();
@@ -177,6 +188,10 @@ function onInit() {
 	bindGotoSupost();
 
 	fetchItems();
+
+	chageImageOnHover('refresh', 'images/refresh.png', 'images/refresh-bw.png');
+	chageImageOnHover('options', 'images/Setting-icon.png', 
+										'images/Setting-icon-bw.png');
 
 	document.querySelector('#refresh').addEventListener('click', refresh);
 } // end of onInit();

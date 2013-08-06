@@ -8,20 +8,9 @@ recent posts and access them right from the extension.
 
 Changelog:
 ==========
+- Popup refresh button
 - Filtering by keywords
-- Added jscolor widget and popup background color selection option.
-- Version promoted to 0.0.4. Added screenshot
-- Version 0.0.3. New options. Readme updated
-- Promoted to version 0.0.2 Show post photos
+- Added popup background color selection option
+- Show recent post photos
 - Show old posts in popup
-- Added keywords textarea, clear items cache button
 - Settings saving and restoration
-- Progress to v0.0.2
-- Update notification and moved images
-- Update notification message
-- Added icons and updated manifest
-- New items number on icon is updated according to cache
-- Items cache
-- Items list added
-- Popup window
-- Initial commit
