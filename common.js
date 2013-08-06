@@ -85,6 +85,21 @@ function isSupostUrl(url) {
   return url.indexOf('supost.com') >= 0;
 }
 
+// Return true for an item containing one of the 
+// keywords and false otherwise
+function filterItem(description) {
+	var keywords = settings.keywords.split(/[ ,]+/);
+	for (i = 0; i < keywords.length; ++i) {
+		var keyword = keywords[i].trim()
+		if (keyword.length > 0 && 
+				description.match(new RegExp(keyword, 'i'))) {
+			return true;
+		}
+	}
+
+	return false;
+} // filterByKeywords
+
 function getNewItemsCount(onSuccess, onError) {
 	console.log('getNewItemsCount');
   var xhr = new XMLHttpRequest();
@@ -99,6 +114,13 @@ function getNewItemsCount(onSuccess, onError) {
 			var itemContent = item.children[0];
 			itemLink = itemContent["href"];
 			itemDescription = itemContent.innerHTML;
+
+			if (settings.filterByKeywords && !filterItem(itemDescription)) {
+				// doesn't match filter, skip item
+				item = content.iterateNext();
+				continue;
+			}
+
 			if (itemLink in itemsCache) {
 				console.log('Item ' + itemLink + ' is already in cache');
 			}

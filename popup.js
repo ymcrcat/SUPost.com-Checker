@@ -44,6 +44,13 @@ function parseItems(content) {
 	var itemsCounter = 0;
 	var itemContent = content.iterateNext();
 	while (itemContent) {
+		var itemDescription = itemContent.children[0].innerHTML;
+		if (settings.filterByKeywords && !filterItem(itemDescription)) {
+			// doesn't match filter, skip item
+			itemContent = content.iterateNext();
+			continue;
+		}
+
 		var isnew = addItem(itemContent);
 		if (isnew) { 
 			++itemsCounter;
