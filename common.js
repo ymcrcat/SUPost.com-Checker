@@ -9,7 +9,8 @@ var DEFAULT_SETTINGS = {
 	'pollIntervalMin' 	: 1,
 	'pollIntervalMax' 	: 60,
 	'filterByKeywords' 	: false,
-	'keywords'					: ''
+	'keywords'					: '',
+	'popupBgColor'			: '#FFFFFF'
 };
 
 var settings = DEFAULT_SETTINGS;

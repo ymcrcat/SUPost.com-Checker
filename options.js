@@ -16,12 +16,14 @@ function save_options() {
 	var requestTimeout = document.getElementById("request_timeout");
 	var filterByKeywords = document.getElementById("filter_by_keywords");
 	var keywords = document.getElementById("keywords");
+	var popupBgColor = document.getElementById("popup_bg_color");
 
 	settings.pollIntervalMin = pollIntervalMin.value;
 	settings.pollIntervalMax = pollIntervalMax.value;
 	settings.requestTimeout = requestTimeout.value;
 	settings.filterByKeywords = filterByKeywords.checked;
 	settings.keywords = keywords.value;
+	settings.popupBgColor = popupBgColor.value;
 
 	saveSettings();
 	displayOptionsSaved();
@@ -36,12 +38,14 @@ function restore_options() {
 	var requestTimeout = document.getElementById("request_timeout");
 	var filterByKeywords = document.getElementById("filter_by_keywords");
 	var keywords = document.getElementById("keywords");
+	var popupBgColor = document.getElementById("popup_bg_color");
 
 	pollIntervalMin.value = settings.pollIntervalMin;
 	pollIntervalMax.value = settings.pollIntervalMax;
 	requestTimeout.value = settings.requestTimeout;
 	filterByKeywords.checked = settings.filterByKeywords;
 	keywords.value = settings.keywords;
+	popupBgColor.value = settings.popupBgColor;
 }
 
 function cancel() {

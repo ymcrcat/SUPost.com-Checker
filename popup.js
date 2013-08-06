@@ -158,6 +158,7 @@ function fetchItems() {
 function onInit() {
 	console.log('SUPost popup');
 	restoreSettings();
+	document.bgColor = settings.popupBgColor;
 
 	initCache();
 	console.log(itemsCache);	
