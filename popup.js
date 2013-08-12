@@ -161,7 +161,7 @@ function refresh() {
 	location.reload(true);
 }
 
-function chageImageOnHover(id, mouseover_img, mouseout_img) {
+function changeImageOnHover(id, mouseover_img, mouseout_img) {
 	var elem = document.getElementById(id);
 	elem.onmouseover = function() {
 		elem.src = mouseover_img;
@@ -184,9 +184,9 @@ function onInit() {
 
 	fetchItems();
 
-	chageImageOnHover('refresh', 'images/refresh.png', 'images/refresh-bw.png');
-	chageImageOnHover('options', 'images/Setting-icon.png', 
-										'images/Setting-icon-bw.png');
+	changeImageOnHover('refresh', 'images/refresh.png', 'images/refresh-bw.png');
+	changeImageOnHover('options', 'images/Setting-icon.png', 'images/Setting-icon-bw.png');
+	changeImageOnHover('faq', 'images/help.png', 'images/help-bw.png');
 
 	document.querySelector('#refresh').addEventListener('click', refresh);
 } // end of onInit();

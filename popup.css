@@ -1,5 +1,5 @@
 .logo{
-	width: 90px;
+	width: 80px;
 	float: left;
 }
 .content {
@@ -8,16 +8,14 @@
 }
 .buttons {
 	float: right;
-	width: 80px;
+	width: 130px;
 }
 .old_items a:link {
 	color: #AAAAAA;
 }
 .post_photos {
-	width: 400px;
+	width: 380px;
 	float: left;
-	padding: 5px;
-	padding-left: 15px;
 }
 .post_photo {
 	width: 80px;
